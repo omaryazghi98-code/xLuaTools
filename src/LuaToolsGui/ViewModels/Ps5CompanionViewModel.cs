@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
+using Microsoft.Win32;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LuaToolsGui.Models;
@@ -129,6 +130,28 @@ public partial class Ps5CompanionViewModel : ObservableObject
         SelectedGameDetails = await _client.GetGameAsync(SelectedGame.Id);
         SelectedRoot = null;
         ClearListing();
+    });
+
+    [RelayCommand]
+    private Task ImportLuaProfileAsync() => RunBusyAsync(async () =>
+    {
+        if (!IsPaired || SelectedGame is null) return;
+        if (SelectedGame.Kind != "steam" || SelectedGame.App == 0)
+            throw new InvalidOperationException("Select a Steam game before importing a LuaTools profile.");
+
+        var dialog = new OpenFileDialog
+        {
+            Title = "Import LuaTools profile into Playden",
+            Filter = "Lua profile (*.lua)|*.lua|All files (*.*)|*.*",
+            CheckFileExists = true,
+            Multiselect = false
+        };
+        if (dialog.ShowDialog() != true) return;
+
+        ConfigureClient();
+        var source = await File.ReadAllTextAsync(dialog.FileName);
+        var result = await _client.ImportLuaProfileAsync(SelectedGame.App, source);
+        StatusText = $"Imported {result.Pins} manifest pins for {SelectedGame.Name} into Playden.";
     });
 
     [RelayCommand]
