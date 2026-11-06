@@ -114,7 +114,7 @@
                                             <Run Text="App " />
                                             <Run Text="{Binding App}" />
                                         </TextBlock>
-                                        <TextBlock FontSize="11.5" Foreground="#9ca3af" Text="{Binding Installed, StringFormat=Installed: {0}}" />
+                                        <TextBlock FontSize="11.5" Foreground="#9ca3af" Text="{Binding Installed}" />
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>
