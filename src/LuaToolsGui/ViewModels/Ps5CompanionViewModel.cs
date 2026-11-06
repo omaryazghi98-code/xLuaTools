@@ -2,6 +2,8 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
+using System.Net;
+using System.Net.Sockets;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LuaToolsGui.Models;
@@ -112,6 +114,8 @@ public partial class Ps5CompanionViewModel : ObservableObject
         var host = HostAddress.Trim();
         if (string.IsNullOrWhiteSpace(host))
             throw new InvalidOperationException(Resources.Strings.Ps5_Error_HostRequired);
+        if (!IPAddress.TryParse(host, out var address) || address.AddressFamily != AddressFamily.InterNetwork)
+            throw new InvalidOperationException(Resources.Strings.Ps5_Error_InvalidHost);
 
         if (!int.TryParse(Port, NumberStyles.None, CultureInfo.InvariantCulture, out var port)
             || port is < 1 or > 65535)
@@ -161,10 +165,12 @@ public partial class Ps5CompanionViewModel : ObservableObject
         }
         catch (OperationCanceledException)
         {
+            IsPaired = false;
             ErrorMessage = Resources.Strings.Ps5_Error_Timeout;
         }
         catch (HttpRequestException)
         {
+            IsPaired = false;
             ErrorMessage = Resources.Strings.Ps5_Error_Connection;
         }
         catch (Exception ex)
