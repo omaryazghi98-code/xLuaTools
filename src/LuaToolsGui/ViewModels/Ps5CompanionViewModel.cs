@@ -35,7 +35,7 @@ public partial class Ps5CompanionViewModel : ObservableObject
     private string _currentPath = "";
     [ObservableProperty] private bool _hasListing;
     [ObservableProperty] private bool _listingTruncated;
-    [ObservableProperty] private uint _unshownEntries;
+    [ObservableProperty] private ulong _unshownEntries;
 
     public ObservableCollection<LuaDenGame> Games { get; } = [];
     public ObservableCollection<LuaDenFileEntry> Entries { get; } = [];
