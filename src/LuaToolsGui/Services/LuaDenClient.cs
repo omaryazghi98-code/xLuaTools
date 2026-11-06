@@ -88,6 +88,17 @@ public sealed class LuaDenClient : IDisposable
             requireFilesAction: false,
             cancellationToken);
 
+    /// <summary>List one root or a relative directory within a game.</summary>
+    public Task<LuaDenFileListing> ListFilesAsync(
+        string gameId, string rootId, string relativePath = "", CancellationToken cancellationToken = default)
+    {
+        var path = "api/files/list?game=" + Uri.EscapeDataString(gameId)
+            + "&root=" + Uri.EscapeDataString(rootId)
+            + "&path=" + Uri.EscapeDataString(relativePath);
+        return SendJsonAsync<LuaDenFileListing>(
+            HttpMethod.Get, path, requireFilesAction: false, cancellationToken);
+    }
+
     private async Task<T> SendJsonAsync<T>(
         HttpMethod method, string path, bool requireFilesAction, CancellationToken cancellationToken)
     {
