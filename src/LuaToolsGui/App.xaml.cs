@@ -23,6 +23,7 @@ public partial class App : Application
             .ConfigureServices(services =>
             {
                 services.AddSingleton<SettingsService>();
+                services.AddSingleton<LuaDenClient>();
                 services.AddSingleton<CacheService>();
                 services.AddSingleton<SteamService>();
                 services.AddSingleton<SteamAppListCache>();
@@ -78,6 +79,7 @@ public partial class App : Application
                 services.AddSingleton<PluginViewModel>();
                 services.AddSingleton<OnboardingViewModel>();
                 services.AddSingleton<MainViewModel>();
+                services.AddSingleton<Ps5CompanionViewModel>();
                 // Pages resolved by NavigationView via the DI service provider.
                 services.AddSingleton<HomeView>();
                 services.AddSingleton<DownloadView>();
@@ -87,6 +89,7 @@ public partial class App : Application
                 services.AddSingleton<ModeView>();
                 services.AddSingleton<FixesView>();
                 services.AddSingleton<PluginView>();
+                services.AddSingleton<Ps5CompanionView>();
                 services.AddSingleton<SettingsView>();
                 services.AddSingleton<MainWindow>();
             })
