@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Sockets;
+using System.Net.Http;
 using System.Text.Json;
 using LuaToolsGui.Models;
 
