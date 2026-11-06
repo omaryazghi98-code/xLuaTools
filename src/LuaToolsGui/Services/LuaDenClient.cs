@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using LuaToolsGui.Models;
 
@@ -100,11 +101,25 @@ public sealed class LuaDenClient : IDisposable
             HttpMethod.Get, path, requireFilesAction: false, cancellationToken);
     }
 
+    /// <summary>Send a LuaTools profile to Playden. Playden imports only setManifestid version pins.</summary>
+    public Task<LuaDenProfileImport> ImportLuaProfileAsync(
+        uint appId, string luaSource, CancellationToken cancellationToken = default)
+    {
+        var content = new StringContent(luaSource, Encoding.UTF8, "text/plain");
+        return SendJsonAsync<LuaDenProfileImport>(
+            HttpMethod.Post,
+            "api/files/lua-profile?game=" + appId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            requireFilesAction: true,
+            cancellationToken,
+            content);
+    }
+
     private async Task<T> SendJsonAsync<T>(
-        HttpMethod method, string path, bool requireFilesAction, CancellationToken cancellationToken)
+        HttpMethod method, string path, bool requireFilesAction, CancellationToken cancellationToken, HttpContent? content = null)
     {
         var http = _http ?? throw new InvalidOperationException("Set the PS5 address before connecting.");
         using var request = new HttpRequestMessage(method, path);
+        request.Content = content;
         // The action header is required for POST routes. Do not send an Origin header: Playden only
         // accepts browser origins that exactly match Host, while this is a native desktop client.
         if (requireFilesAction)
@@ -135,7 +150,7 @@ public sealed class LuaDenClient : IDisposable
         {
             HttpStatusCode.Unauthorized => "This PC is not paired with Playden. Pair it again.",
             HttpStatusCode.Forbidden => "Playden rejected the request. Check that the Playden version supports the companion API.",
-            HttpStatusCode.Conflict => "The pairing code has expired. Ask Playden to show a new one.",
+            HttpStatusCode.Conflict => "Playden could not apply the requested operation in its current state.",
             HttpStatusCode.TooManyRequests => "Playden is temporarily rate-limiting pairing attempts. Try again shortly.",
             HttpStatusCode.ServiceUnavailable => "Playden is busy setting up a game. Try again when setup finishes.",
             _ => $"Playden returned HTTP {(int)status} ({status})."
