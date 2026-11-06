@@ -121,3 +121,10 @@ public sealed class LuaDenPairConfirm
 {
     [JsonPropertyName("paired")] public bool Paired { get; set; }
 }
+
+public sealed class LuaDenProfileImport
+{
+    [JsonPropertyName("ok")] public bool Ok { get; set; }
+    [JsonPropertyName("app")] public uint App { get; set; }
+    [JsonPropertyName("pins")] public int Pins { get; set; }
+}
