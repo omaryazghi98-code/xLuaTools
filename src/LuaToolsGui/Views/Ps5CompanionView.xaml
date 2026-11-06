@@ -173,7 +173,7 @@
                                                 <ColumnDefinition Width="150" />
                                             </Grid.ColumnDefinitions>
                                             <Button HorizontalContentAlignment="Left" Padding="4,3"
-                                                    Content="{Binding Name}"
+                                                    Foreground="#374151" Content="{Binding Name}"
                                                     IsEnabled="{Binding Directory}"
                                                     Command="{Binding DataContext.OpenEntryCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                                     CommandParameter="{Binding}" />
