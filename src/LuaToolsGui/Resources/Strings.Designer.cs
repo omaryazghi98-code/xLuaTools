@@ -26,6 +26,7 @@ public static class Strings
     public static string Nav_Builds => Get(nameof(Nav_Builds));
     public static string Nav_Mode => Get(nameof(Nav_Mode));
     public static string Nav_Fixes => Get(nameof(Nav_Fixes));
+    public static string Nav_PS5 => Get(nameof(Nav_PS5));
     public static string Nav_RestartSteam => Get(nameof(Nav_RestartSteam));
     public static string Nav_Settings => Get(nameof(Nav_Settings));
     public static string Nav_SignInDiscord => Get(nameof(Nav_SignInDiscord));
@@ -119,6 +120,36 @@ public static class Strings
     public static string Home_SignedInAs => Get(nameof(Home_SignedInAs));
     public static string Home_NoModeSelected => Get(nameof(Home_NoModeSelected));
     public static string Home_ModeIs => Get(nameof(Home_ModeIs));
+
+    // ── PS5 companion ──
+    public static string Nav_PS5 => Get(nameof(Nav_PS5));
+    public static string Ps5_Title => Get(nameof(Ps5_Title));
+    public static string Ps5_Subtitle => Get(nameof(Ps5_Subtitle));
+    public static string Ps5_ConnectionTitle => Get(nameof(Ps5_ConnectionTitle));
+    public static string Ps5_HostLabel => Get(nameof(Ps5_HostLabel));
+    public static string Ps5_PortLabel => Get(nameof(Ps5_PortLabel));
+    public static string Ps5_Connect => Get(nameof(Ps5_Connect));
+    public static string Ps5_StartPairing => Get(nameof(Ps5_StartPairing));
+    public static string Ps5_PairingTitle => Get(nameof(Ps5_PairingTitle));
+    public static string Ps5_PairingHint => Get(nameof(Ps5_PairingHint));
+    public static string Ps5_ConfirmPairing => Get(nameof(Ps5_ConfirmPairing));
+    public static string Ps5_RefreshGames => Get(nameof(Ps5_RefreshGames));
+    public static string Ps5_GamesTitle => Get(nameof(Ps5_GamesTitle));
+    public static string Ps5_ConnectionHelp => Get(nameof(Ps5_ConnectionHelp));
+    public static string Ps5_Status_NotConnected => Get(nameof(Ps5_Status_NotConnected));
+    public static string Ps5_Status_NotPaired => Get(nameof(Ps5_Status_NotPaired));
+    public static string Ps5_Status_Paired => Get(nameof(Ps5_Status_Paired));
+    public static string Ps5_Status_AwaitingCode => Get(nameof(Ps5_Status_AwaitingCode));
+    public static string Ps5_Status_Loaded => Get(nameof(Ps5_Status_Loaded));
+    public static string Ps5_Status_LibraryUnknown => Get(nameof(Ps5_Status_LibraryUnknown));
+    public static string Ps5_Status_SettingUp => Get(nameof(Ps5_Status_SettingUp));
+    public static string Ps5_Error_HostRequired => Get(nameof(Ps5_Error_HostRequired));
+    public static string Ps5_Error_InvalidPort => Get(nameof(Ps5_Error_InvalidPort));
+    public static string Ps5_Error_Code => Get(nameof(Ps5_Error_Code));
+    public static string Ps5_Error_Pairing => Get(nameof(Ps5_Error_Pairing));
+    public static string Ps5_Error_Timeout => Get(nameof(Ps5_Error_Timeout));
+    public static string Ps5_Error_Connection => Get(nameof(Ps5_Error_Connection));
+    public static string Ps5_LoadDetails => Get(nameof(Ps5_LoadDetails));
 
     // ── Mode ──
     public static string Mode_Title => Get(nameof(Mode_Title));
