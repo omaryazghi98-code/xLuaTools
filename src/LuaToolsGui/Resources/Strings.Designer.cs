@@ -150,6 +150,7 @@ public static class Strings
     public static string Ps5_Error_Timeout => Get(nameof(Ps5_Error_Timeout));
     public static string Ps5_Error_Connection => Get(nameof(Ps5_Error_Connection));
     public static string Ps5_LoadDetails => Get(nameof(Ps5_LoadDetails));
+    public static string Ps5_UpOneLevel => Get(nameof(Ps5_UpOneLevel));
 
     // ── Mode ──
     public static string Mode_Title => Get(nameof(Mode_Title));
