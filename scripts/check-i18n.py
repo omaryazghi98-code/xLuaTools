@@ -58,6 +58,7 @@ PENDING_TRANSLATION: set[str] = {
     "Ps5_Error_Timeout",
     "Ps5_Error_Connection",
     "Ps5_LoadDetails",
+    "Ps5_UpOneLevel",
 }
 # These PS5 companion strings are intentionally English-only while the first UI milestone settles.
 # Translate them across all locales and remove them from this set when the screen is stable.
