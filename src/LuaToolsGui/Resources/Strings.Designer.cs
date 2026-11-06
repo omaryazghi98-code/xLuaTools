@@ -122,11 +122,11 @@ public static class Strings
     public static string Home_ModeIs => Get(nameof(Home_ModeIs));
 
     // ── PS5 companion ──
-    public static string Nav_PS5 => Get(nameof(Nav_PS5));
     public static string Ps5_Title => Get(nameof(Ps5_Title));
     public static string Ps5_Subtitle => Get(nameof(Ps5_Subtitle));
     public static string Ps5_ConnectionTitle => Get(nameof(Ps5_ConnectionTitle));
     public static string Ps5_HostLabel => Get(nameof(Ps5_HostLabel));
+    public static string Ps5_Error_InvalidHost => Get(nameof(Ps5_Error_InvalidHost));
     public static string Ps5_PortLabel => Get(nameof(Ps5_PortLabel));
     public static string Ps5_Connect => Get(nameof(Ps5_Connect));
     public static string Ps5_StartPairing => Get(nameof(Ps5_StartPairing));
