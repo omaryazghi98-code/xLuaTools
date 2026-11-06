@@ -57,6 +57,10 @@ public class AppSettings
     // it is matched in code; the Settings page localizes the display only. Null = never set → "Auto".
     // See AppHttp for what each mode does.
     public string? DnsMode { get; set; }
+
+    // PS5 Playden/LuaDen LAN endpoint. Pairing cookies are intentionally never persisted.
+    public string? LuaDenHost { get; set; }
+    public int? LuaDenPort { get; set; }
 }
 
 public class SettingsService
@@ -173,6 +177,20 @@ public class SettingsService
         set { _settings.DnsMode = value; Save(); }
     }
 
+    /// <summary>Last-used PS5 LAN IPv4 address. The session cookie is never stored here.</summary>
+    public string? LuaDenHost
+    {
+        get => _settings.LuaDenHost;
+        set { _settings.LuaDenHost = string.IsNullOrWhiteSpace(value) ? null : value.Trim(); Save(); }
+    }
+
+    /// <summary>Last-used LuaDen HTTP port (the console normally selects 7031–7039).</summary>
+    public int LuaDenPort
+    {
+        get => _settings.LuaDenPort is >= 1 and <= 65535 ? _settings.LuaDenPort.Value : 7031;
+        set { _settings.LuaDenPort = value is >= 1 and <= 65535 ? value : null; Save(); }
+    }
+
     private static readonly string TmpPath = FilePath + ".tmp";
     private static readonly string BakPath = FilePath + ".bak";
 
@@ -231,7 +249,10 @@ public class SettingsService
             && _settings.HubcapApiKey is null
             && _settings.StartWithWindows is null
             && _settings.MinimizeToTray is null
-            && _settings.FastFetch is null;
+            && _settings.FastFetch is null
+            && _settings.DnsMode is null
+            && _settings.LuaDenHost is null
+            && _settings.LuaDenPort is null;
         if (empty)
         {
             foreach (var p in new[] { FilePath, BakPath, TmpPath })
