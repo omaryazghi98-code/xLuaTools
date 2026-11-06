@@ -666,6 +666,7 @@ Cancel - keep downloading</value></data>
   <data name="Ps5_Subtitle" xml:space="preserve"><value>Connect LuaTools to Playden on your PS5 over your local network.</value></data>
   <data name="Ps5_ConnectionTitle" xml:space="preserve"><value>Console connection</value></data>
   <data name="Ps5_HostLabel" xml:space="preserve"><value>PS5 LAN IPv4 address</value></data>
+  <data name="Ps5_Error_InvalidHost" xml:space="preserve"><value>Enter a valid IPv4 address for the PS5.</value></data>
   <data name="Ps5_PortLabel" xml:space="preserve"><value>Port</value></data>
   <data name="Ps5_Connect" xml:space="preserve"><value>Connect</value></data>
   <data name="Ps5_StartPairing" xml:space="preserve"><value>Start pairing on PS5</value></data>
