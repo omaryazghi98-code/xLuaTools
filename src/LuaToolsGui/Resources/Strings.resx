@@ -659,4 +659,34 @@ Cancel - keep downloading</value></data>
   <data name="Depot_Err_NoKeyFor" xml:space="preserve"><value>No decryption key in Lua for depot {0}.</value></data>
   <data name="Builds_Select_SharedHint" xml:space="preserve"><value>Shared runtime — usually already installed. Tick to download anyway.</value></data>
   <data name="Downloads_ClearHistory_Confirm" xml:space="preserve"><value>Remove all {0} entries from the download history? Downloaded files are not affected.</value></data>
+
+  <!-- ── PS5 companion (English fallback while translations are pending) ── -->
+  <data name="Nav_PS5" xml:space="preserve"><value>PS5 Companion</value></data>
+  <data name="Ps5_Title" xml:space="preserve"><value>PS5 Companion</value></data>
+  <data name="Ps5_Subtitle" xml:space="preserve"><value>Connect LuaTools to Playden on your PS5 over your local network.</value></data>
+  <data name="Ps5_ConnectionTitle" xml:space="preserve"><value>Console connection</value></data>
+  <data name="Ps5_HostLabel" xml:space="preserve"><value>PS5 LAN IPv4 address</value></data>
+  <data name="Ps5_PortLabel" xml:space="preserve"><value>Port</value></data>
+  <data name="Ps5_Connect" xml:space="preserve"><value>Connect</value></data>
+  <data name="Ps5_StartPairing" xml:space="preserve"><value>Start pairing on PS5</value></data>
+  <data name="Ps5_PairingTitle" xml:space="preserve"><value>Pair this PC</value></data>
+  <data name="Ps5_PairingHint" xml:space="preserve"><value>Start pairing above, then enter the six-digit code shown on the PS5.</value></data>
+  <data name="Ps5_ConfirmPairing" xml:space="preserve"><value>Confirm code</value></data>
+  <data name="Ps5_RefreshGames" xml:space="preserve"><value>Refresh</value></data>
+  <data name="Ps5_GamesTitle" xml:space="preserve"><value>PS5 game library</value></data>
+  <data name="Ps5_ConnectionHelp" xml:space="preserve"><value>Playden must be open on the PS5 and both devices must be on the same local network. The default port is 7031; use the port shown by Playden if it differs.</value></data>
+  <data name="Ps5_Status_NotConnected" xml:space="preserve"><value>Not connected.</value></data>
+  <data name="Ps5_Status_NotPaired" xml:space="preserve"><value>Playden is reachable, but this PC is not paired yet.</value></data>
+  <data name="Ps5_Status_Paired" xml:space="preserve"><value>Paired with Playden.</value></data>
+  <data name="Ps5_Status_AwaitingCode" xml:space="preserve"><value>A pairing code is now displayed on the PS5. Enter it below.</value></data>
+  <data name="Ps5_Status_Loaded" xml:space="preserve"><value>Loaded {0} game(s).</value></data>
+  <data name="Ps5_Status_LibraryUnknown" xml:space="preserve"><value>Connected, but Playden has not reported its game library yet.</value></data>
+  <data name="Ps5_Status_SettingUp" xml:space="preserve"><value>The game library is available; Playden is setting up a game.</value></data>
+  <data name="Ps5_Error_HostRequired" xml:space="preserve"><value>Enter the PS5's LAN IPv4 address.</value></data>
+  <data name="Ps5_Error_InvalidPort" xml:space="preserve"><value>Enter a valid port number between 1 and 65535.</value></data>
+  <data name="Ps5_Error_Code" xml:space="preserve"><value>Enter the six-digit code shown on the PS5.</value></data>
+  <data name="Ps5_Error_Pairing" xml:space="preserve"><value>Playden did not confirm the pairing session. Start pairing again.</value></data>
+  <data name="Ps5_Error_Timeout" xml:space="preserve"><value>The PS5 did not respond before the request timed out.</value></data>
+  <data name="Ps5_Error_Connection" xml:space="preserve"><value>Could not reach Playden. Check the PS5 address, port, network connection, and that Playden is open.</value></data>
+  <data name="Ps5_LoadDetails" xml:space="preserve"><value>Show selected game roots</value></data>
 </root>
