@@ -1,0 +1,143 @@
+<UserControl
+    x:Class="LuaToolsGui.Views.Ps5CompanionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:res="clr-namespace:LuaToolsGui.Resources"
+    xmlns:vm="clr-namespace:LuaToolsGui.ViewModels"
+    d:DataContext="{d:DesignInstance Type=vm:Ps5CompanionViewModel}"
+    TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel MaxWidth="820" Margin="8,16,16,24">
+            <TextBlock FontSize="22" FontWeight="Bold" Text="{x:Static res:Strings.Ps5_Title}" />
+            <TextBlock Margin="0,3,0,0" FontSize="13" Foreground="#9ca3af"
+                       Text="{x:Static res:Strings.Ps5_Subtitle}" TextWrapping="Wrap" />
+
+            <Border Margin="0,18,0,0" Padding="18" Background="#0DFFFFFF"
+                    BorderBrush="#1FFFFFFF" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock FontSize="15" FontWeight="SemiBold"
+                               Text="{x:Static res:Strings.Ps5_ConnectionTitle}" />
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="110" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Margin="0,0,0,5" FontSize="12" Foreground="#9ca3af"
+                                       Text="{x:Static res:Strings.Ps5_HostLabel}" />
+                            <TextBox Height="34" Padding="8,5"
+                                     Text="{Binding HostAddress, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                            <TextBlock Margin="0,0,0,5" FontSize="12" Foreground="#9ca3af"
+                                       Text="{x:Static res:Strings.Ps5_PortLabel}" />
+                            <TextBox Height="34" Padding="8,5"
+                                     Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel Margin="0,12,0,0" Orientation="Horizontal">
+                        <Button Padding="14,7" Content="{x:Static res:Strings.Ps5_Connect}"
+                                Command="{Binding ConnectCommand}" />
+                        <Button Margin="8,0,0,0" Padding="14,7"
+                                Content="{x:Static res:Strings.Ps5_StartPairing}"
+                                Command="{Binding StartPairingCommand}" />
+                    </StackPanel>
+                    <TextBlock Margin="0,12,0,0" FontSize="12.5" Foreground="#9ca3af"
+                               Text="{Binding StatusText}" TextWrapping="Wrap" />
+                    <TextBlock Margin="0,6,0,0" FontSize="12.5" Foreground="#f87171"
+                               Text="{Binding ErrorMessage}" TextWrapping="Wrap"
+                               Visibility="{Binding ErrorMessage, Converter={StaticResource NullToCollapsed}}" />
+                    <TextBlock Margin="0,8,0,0" FontSize="12" Foreground="#7c8593"
+                               Text="{x:Static res:Strings.Ps5_ConnectionHelp}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border Margin="0,12,0,0" Padding="18" Background="#0DFFFFFF"
+                    BorderBrush="#1FFFFFFF" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock FontSize="15" FontWeight="SemiBold"
+                               Text="{x:Static res:Strings.Ps5_PairingTitle}" />
+                    <TextBlock Margin="0,5,0,0" FontSize="12" Foreground="#9ca3af"
+                               Text="{x:Static res:Strings.Ps5_PairingHint}" TextWrapping="Wrap" />
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Height="36" Padding="8,6" MaxLength="6"
+                                 VerticalContentAlignment="Center"
+                                 Text="{Binding ConfirmationCode, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Grid.Column="1" Margin="10,0,0,0" Padding="14,7"
+                                Content="{x:Static res:Strings.Ps5_ConfirmPairing}"
+                                Command="{Binding ConfirmPairingCommand}" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Margin="0,12,0,0" Padding="18" Background="#0DFFFFFF"
+                    BorderBrush="#1FFFFFFF" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontSize="15" FontWeight="SemiBold"
+                                   Text="{x:Static res:Strings.Ps5_GamesTitle}" />
+                        <Button Grid.Column="1" Padding="12,5" IsEnabled="{Binding IsPaired}"
+                                Content="{x:Static res:Strings.Ps5_RefreshGames}"
+                                Command="{Binding RefreshGamesCommand}" />
+                    </Grid>
+                    <ListView Margin="0,12,0,0" Height="230"
+                              ItemsSource="{Binding Games}" SelectedItem="{Binding SelectedGame}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="SemiBold" Text="{Binding Name}" />
+                                        <TextBlock Margin="0,3,0,0" FontSize="11.5" Foreground="#9ca3af">
+                                            <Run Text="{Binding Kind}" />
+                                            <Run Text=" · " />
+                                            <Run Text="{Binding Drive}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Margin="0,0,10,0" FontSize="11.5" Foreground="#9ca3af">
+                                            <Run Text="App " />
+                                            <Run Text="{Binding App}" />
+                                        </TextBlock>
+                                        <TextBlock FontSize="11.5" Foreground="#9ca3af" Text="{Binding Installed, StringFormat=Installed: {0}}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <StackPanel Margin="0,12,0,0">
+                        <Button HorizontalAlignment="Left" Padding="14,7"
+                                Content="{x:Static res:Strings.Ps5_LoadDetails}"
+                                Command="{Binding LoadSelectedGameCommand}" IsEnabled="{Binding IsPaired}" />
+                        <TextBlock Margin="0,10,0,0" FontSize="12.5" Foreground="#9ca3af"
+                                   Text="{Binding SelectedGameDetails.GameFolder}" TextWrapping="Wrap" />
+                        <ItemsControl Margin="0,8,0,0" ItemsSource="{Binding SelectedGameDetails.Roots}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Margin="0,2" IsChecked="{Binding Exists}" IsEnabled="False"
+                                              Content="{Binding Id}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
