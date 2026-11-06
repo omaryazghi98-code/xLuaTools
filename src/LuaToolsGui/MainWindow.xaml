@@ -92,6 +92,11 @@
                             <ui:SymbolIcon Symbol="PuzzlePiece24" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
+                    <ui:NavigationViewItem Content="{x:Static res:Strings.Nav_PS5}" TargetPageType="{x:Type views:Ps5CompanionView}">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Games24" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
                 </ui:NavigationView.MenuItems>
 
                 <ui:NavigationView.FooterMenuItems>
