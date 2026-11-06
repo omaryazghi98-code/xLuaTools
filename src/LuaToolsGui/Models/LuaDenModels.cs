@@ -50,7 +50,7 @@ public sealed class LuaDenFileListing
     [JsonPropertyName("exists")] public bool Exists { get; set; }
     [JsonPropertyName("read_only")] public bool ReadOnly { get; set; }
     [JsonPropertyName("truncated")] public bool Truncated { get; set; }
-    [JsonPropertyName("unshown")] public uint Unshown { get; set; }
+    [JsonPropertyName("unshown")] public ulong Unshown { get; set; }
     [JsonPropertyName("entries")] public List<LuaDenFileEntry> Entries { get; set; } = [];
 }
 
