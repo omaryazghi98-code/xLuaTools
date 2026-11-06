@@ -28,10 +28,39 @@ PLACEHOLDER_RE = re.compile(r'\{(\d+)\}')
 # This list IS the handoff to the translation pass. When a feature's UI is final: translate its keys
 # across every Strings.<tag>.resx, clear them from here, and this check goes back to demanding full
 # parity. Anything left here is untranslated in all 29 languages.
-PENDING_TRANSLATION: set[str] = set()
-# Empty on purpose: every key is translated in all 29 languages, so the parity check above is
-# unconditional. Add a key here ONLY while its feature's UI is still moving, and clear it again
-# as soon as the translations land. Anything listed is English-only for every user.
+PENDING_TRANSLATION: set[str] = {
+    "Nav_PS5",
+    "Ps5_Title",
+    "Ps5_Subtitle",
+    "Ps5_ConnectionTitle",
+    "Ps5_HostLabel",
+    "Ps5_PortLabel",
+    "Ps5_Connect",
+    "Ps5_StartPairing",
+    "Ps5_PairingTitle",
+    "Ps5_PairingHint",
+    "Ps5_ConfirmPairing",
+    "Ps5_RefreshGames",
+    "Ps5_GamesTitle",
+    "Ps5_ConnectionHelp",
+    "Ps5_Status_NotConnected",
+    "Ps5_Status_NotPaired",
+    "Ps5_Status_Paired",
+    "Ps5_Status_AwaitingCode",
+    "Ps5_Status_Loaded",
+    "Ps5_Status_LibraryUnknown",
+    "Ps5_Status_SettingUp",
+    "Ps5_Error_HostRequired",
+    "Ps5_Error_InvalidHost",
+    "Ps5_Error_InvalidPort",
+    "Ps5_Error_Code",
+    "Ps5_Error_Pairing",
+    "Ps5_Error_Timeout",
+    "Ps5_Error_Connection",
+    "Ps5_LoadDetails",
+}
+# These PS5 companion strings are intentionally English-only while the first UI milestone settles.
+# Translate them across all locales and remove them from this set when the screen is stable.
 
 
 
