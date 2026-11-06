@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
-using System.Net;
 using System.Net.Sockets;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -12,8 +11,8 @@ using LuaToolsGui.Services;
 namespace LuaToolsGui.ViewModels;
 
 /// <summary>
-/// First milestone of the Playden companion: connect, pair, and read the console's game catalog.
-/// No upload, delete, install, or launch actions are exposed here.
+/// Playden companion: connect, pair, browse the game catalog, and navigate file roots.
+/// This milestone intentionally exposes no upload, delete, install, or launch actions.
 /// </summary>
 public partial class Ps5CompanionViewModel : ObservableObject
 {
@@ -29,8 +28,20 @@ public partial class Ps5CompanionViewModel : ObservableObject
     [ObservableProperty] private bool _isPaired;
     [ObservableProperty] private LuaDenGame? _selectedGame;
     [ObservableProperty] private LuaDenGameDetails? _selectedGameDetails;
+    [ObservableProperty] private LuaDenRoot? _selectedRoot;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentPathLabel))]
+    [NotifyPropertyChangedFor(nameof(HasParentDirectory))]
+    private string _currentPath = "";
+    [ObservableProperty] private bool _hasListing;
+    [ObservableProperty] private bool _listingTruncated;
+    [ObservableProperty] private uint _unshownEntries;
 
     public ObservableCollection<LuaDenGame> Games { get; } = [];
+    public ObservableCollection<LuaDenFileEntry> Entries { get; } = [];
+
+    public string CurrentPathLabel => string.IsNullOrEmpty(CurrentPath) ? "/" : "/" + CurrentPath;
+    public bool HasParentDirectory => !string.IsNullOrEmpty(CurrentPath);
 
     public Ps5CompanionViewModel(LuaDenClient client, SettingsService settings)
     {
@@ -44,6 +55,13 @@ public partial class Ps5CompanionViewModel : ObservableObject
     public Task OnViewLoadedAsync() =>
         string.IsNullOrWhiteSpace(HostAddress) ? Task.CompletedTask : ConnectAsync();
 
+    partial void OnSelectedGameChanged(LuaDenGame? value)
+    {
+        SelectedGameDetails = null;
+        SelectedRoot = null;
+        ClearListing();
+    }
+
     [RelayCommand]
     private Task ConnectAsync() => RunBusyAsync(async () =>
     {
@@ -53,6 +71,7 @@ public partial class Ps5CompanionViewModel : ObservableObject
         {
             Games.Clear();
             SelectedGameDetails = null;
+            ClearListing();
             StatusText = Resources.Strings.Ps5_Status_NotPaired;
             return;
         }
@@ -94,6 +113,7 @@ public partial class Ps5CompanionViewModel : ObservableObject
         {
             Games.Clear();
             SelectedGameDetails = null;
+            ClearListing();
             StatusText = Resources.Strings.Ps5_Status_NotPaired;
             return;
         }
@@ -107,6 +127,48 @@ public partial class Ps5CompanionViewModel : ObservableObject
         if (!IsPaired || SelectedGame is null) return;
         ConfigureClient();
         SelectedGameDetails = await _client.GetGameAsync(SelectedGame.Id);
+        SelectedRoot = null;
+        ClearListing();
+    });
+
+    [RelayCommand]
+    private Task OpenRootAsync(LuaDenRoot? root) => RunBusyAsync(async () =>
+    {
+        if (!IsPaired || SelectedGame is null || root is null || !root.Exists) return;
+        ConfigureClient();
+        SelectedRoot = root;
+        await LoadDirectoryCoreAsync("");
+    });
+
+    [RelayCommand]
+    private Task OpenEntryAsync(LuaDenFileEntry? entry) => RunBusyAsync(async () =>
+    {
+        if (!IsPaired || SelectedGame is null || SelectedRoot is null || entry is null || !entry.Directory)
+            return;
+
+        ConfigureClient();
+        var nextPath = string.IsNullOrEmpty(CurrentPath)
+            ? entry.Name
+            : CurrentPath + "/" + entry.Name;
+        await LoadDirectoryCoreAsync(nextPath);
+    });
+
+    [RelayCommand]
+    private Task GoUpAsync() => RunBusyAsync(async () =>
+    {
+        if (!HasParentDirectory || SelectedGame is null || SelectedRoot is null) return;
+        ConfigureClient();
+        var separator = CurrentPath.LastIndexOf('/');
+        var parent = separator < 0 ? "" : CurrentPath[..separator];
+        await LoadDirectoryCoreAsync(parent);
+    });
+
+    [RelayCommand]
+    private Task RefreshDirectoryAsync() => RunBusyAsync(async () =>
+    {
+        if (SelectedGame is null || SelectedRoot is null || !IsPaired) return;
+        ConfigureClient();
+        await LoadDirectoryCoreAsync(CurrentPath);
     });
 
     private void ConfigureClient()
@@ -135,6 +197,8 @@ public partial class Ps5CompanionViewModel : ObservableObject
 
         SelectedGame = null;
         SelectedGameDetails = null;
+        SelectedRoot = null;
+        ClearListing();
 
         if (!catalog.Known)
             StatusText = Resources.Strings.Ps5_Status_LibraryUnknown;
@@ -142,6 +206,30 @@ public partial class Ps5CompanionViewModel : ObservableObject
             StatusText = Resources.Strings.Ps5_Status_SettingUp;
         else
             StatusText = string.Format(CultureInfo.CurrentCulture, Resources.Strings.Ps5_Status_Loaded, Games.Count);
+    }
+
+    private async Task LoadDirectoryCoreAsync(string path)
+    {
+        if (SelectedGame is null || SelectedRoot is null) return;
+        var listing = await _client.ListFilesAsync(SelectedGame.Id, SelectedRoot.Id, path);
+
+        Entries.Clear();
+        foreach (var entry in listing.Entries)
+            Entries.Add(entry);
+
+        CurrentPath = path;
+        HasListing = listing.Exists;
+        ListingTruncated = listing.Truncated;
+        UnshownEntries = listing.Unshown;
+    }
+
+    private void ClearListing()
+    {
+        Entries.Clear();
+        CurrentPath = "";
+        HasListing = false;
+        ListingTruncated = false;
+        UnshownEntries = 0;
     }
 
     private async Task RunBusyAsync(Func<Task> operation)
@@ -161,6 +249,8 @@ public partial class Ps5CompanionViewModel : ObservableObject
                 IsPaired = false;
                 Games.Clear();
                 SelectedGameDetails = null;
+                SelectedRoot = null;
+                ClearListing();
             }
         }
         catch (OperationCanceledException)
