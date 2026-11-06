@@ -690,4 +690,5 @@ Cancel - keep downloading</value></data>
   <data name="Ps5_Error_Timeout" xml:space="preserve"><value>The PS5 did not respond before the request timed out.</value></data>
   <data name="Ps5_Error_Connection" xml:space="preserve"><value>Could not reach Playden. Check the PS5 address, port, network connection, and that Playden is open.</value></data>
   <data name="Ps5_LoadDetails" xml:space="preserve"><value>Show selected game roots</value></data>
+  <data name="Ps5_UpOneLevel" xml:space="preserve"><value>Up one level</value></data>
 </root>
