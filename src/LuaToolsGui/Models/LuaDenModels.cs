@@ -37,11 +37,74 @@ public sealed class LuaDenGameDetails : LuaDenGame
     [JsonPropertyName("all_setting_up")] public bool AllSettingUp { get; set; }
 }
 
-/// <summary>A file-system root exposed for a game. This first client milestone only displays it.</summary>
+/// <summary>A file-system root exposed for a game.</summary>
 public sealed class LuaDenRoot
 {
     [JsonPropertyName("id")] public string Id { get; set; } = "";
     [JsonPropertyName("exists")] public bool Exists { get; set; }
+}
+
+/// <summary>Response from GET /api/files/list.</summary>
+public sealed class LuaDenFileListing
+{
+    [JsonPropertyName("exists")] public bool Exists { get; set; }
+    [JsonPropertyName("read_only")] public bool ReadOnly { get; set; }
+    [JsonPropertyName("truncated")] public bool Truncated { get; set; }
+    [JsonPropertyName("unshown")] public uint Unshown { get; set; }
+    [JsonPropertyName("entries")] public List<LuaDenFileEntry> Entries { get; set; } = [];
+}
+
+/// <summary>One directory or file from a Playden file listing.</summary>
+public sealed class LuaDenFileEntry
+{
+    [JsonPropertyName("name")] public string Name { get; set; } = "";
+    [JsonPropertyName("directory")] public bool Directory { get; set; }
+    [JsonPropertyName("size")] public ulong Size { get; set; }
+    [JsonPropertyName("modified")] public long Modified { get; set; }
+    [JsonPropertyName("read_only")] public bool ReadOnly { get; set; }
+    [JsonPropertyName("recoverable")] public bool Recoverable { get; set; }
+    [JsonPropertyName("previous")] public LuaDenPreviousVersion? Previous { get; set; }
+
+    [JsonIgnore]
+    public string KindLabel => Directory ? "Folder" : FormatSize(Size);
+
+    [JsonIgnore]
+    public string ModifiedLabel
+    {
+        get
+        {
+            try
+            {
+                return Modified > 0
+                    ? DateTimeOffset.FromUnixTimeSeconds(Modified).ToLocalTime().ToString("g")
+                    : "";
+            }
+            catch (ArgumentOutOfRangeException) { return ""; }
+        }
+    }
+
+    private static string FormatSize(ulong bytes)
+    {
+        string[] units = ["B", "KB", "MB", "GB", "TB"];
+        double size = bytes;
+        var unit = 0;
+        while (size >= 1024 && unit < units.Length - 1)
+        {
+            size /= 1024;
+            unit++;
+        }
+
+        return unit == 0
+            ? $"{bytes:N0} {units[unit]}"
+            : $"{size:N1} {units[unit]}";
+    }
+}
+
+/// <summary>Metadata for the previous recoverable version of a file.</summary>
+public sealed class LuaDenPreviousVersion
+{
+    [JsonPropertyName("size")] public ulong Size { get; set; }
+    [JsonPropertyName("modified")] public long Modified { get; set; }
 }
 
 public sealed class LuaDenPairStatus
